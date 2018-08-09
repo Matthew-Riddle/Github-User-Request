@@ -39,10 +39,9 @@ var appRouter = app => {
     getFollowers(req.params.userId)
       .then(response => {
         return extractFollowers(response.data)
-        // .slice(0, 5) // Slice out the first 5 followers.Thank god for transducers
-        // .map(val => val.login) // Map the sliced out followers login names to a new array that we will return
       })
       .then(async followers => {
+        // Must be async in order to use 'await'
         for (let i = 0; i < followers.length; i++) {
           let temp = {}
           let ff = await getFollowers(followers[i]).then(response => {
@@ -53,7 +52,11 @@ var appRouter = app => {
           temp.followers = ff
           state.followers.push(temp)
         }
-        res.send(state)
+        res.send(
+          JSON.stringify(state)
+            .replace(/(\")|(\{)|(\})/gim, "") // Remove all the messy parts of the json data
+            .replace(/(\,)/gim, ", ")
+        )
       })
       .catch(error => {
         res.send(error.message)
@@ -82,7 +85,9 @@ var appRouter = app => {
   }
 
   extractFollowers = response => {
-    return response.slice(0, 5).map(val => val["login"])
+    return response
+      .slice(0, 5) // Slice out the first 5 followers.Thank god for transducers
+      .map(val => val["login"]) // Map the sliced out followers login names to a new array that we will return
   }
 }
 
