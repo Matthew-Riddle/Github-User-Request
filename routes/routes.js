@@ -4,21 +4,29 @@ const performGetRequest = require("../index")
 
 var appRouter = app => {
   app.get("/", function(req, res) {
-    res
-      .status(200)
-      .send({
-        message:
-          "Welcome to my Restful API. You can retrieve five followers of a github user along with five of their followers up to 3 levels deep."
-      })
+    res.status(200).send({
+      message:
+        "Welcome to my Restful API. You can retrieve five followers of a github user along with five of their followers up to 3 levels deep."
+    })
   })
 
-  let data = {
-    username: null
-  }
+  app.get("/user", async (req, res) => {
+    let state = {
+      // State object to model and store our data
+      user: "", // Initial user
+      followers: [
+        {
+          // Their followers
+          user: "", // Follower
+          followers: ["", ""] // Followers of our followers
+        }
+      ]
+    }
 
-  app.get("/user", (req, res) => {
-    let userArray = []
-    let count = 3
+    state = { user: "", followers: [] } // Set our state to be empty
+
+    let isUserFound = true
+
     let respo = axios
       .get("/users/matthew-riddle/followers")
       .then(response => {
@@ -32,26 +40,6 @@ var appRouter = app => {
         res.status(200).send(response)
       })
       .catch(error => console.log(error))
-  })
-
-  app.get("/users/:num", function(req, res) {
-    var users = []
-    var num = req.params.num
-
-    if (isFinite(num) && num > 0) {
-      for (i = 0; i <= num - 1; i++) {
-        users.push({
-          firstName: faker.name.firstName(),
-          lastName: faker.name.lastName(),
-          username: faker.internet.userName(),
-          email: faker.internet.email()
-        })
-      }
-
-      res.status(200).send(users)
-    } else {
-      res.status(400).send({ message: "invalid number supplied" })
-    }
   })
 }
 
