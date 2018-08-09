@@ -4,7 +4,12 @@ const performGetRequest = require("../index")
 
 var appRouter = app => {
   app.get("/", function(req, res) {
-    res.status(200).send({ message: "Welcome to our restful API" })
+    res
+      .status(200)
+      .send({
+        message:
+          "Welcome to my Restful API. You can retrieve five followers of a github user along with five of their followers up to 3 levels deep."
+      })
   })
 
   let data = {
