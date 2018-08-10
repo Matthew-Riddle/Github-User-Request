@@ -1,6 +1,5 @@
-const faker = require("faker")
+const faker = require("faker") // Was used for testing initially. Generates random data
 const axios = require("../axiosInstance")
-const performGetRequest = require("../index")
 
 var appRouter = app => {
   app.get("/", function(req, res) {
@@ -52,16 +51,22 @@ var appRouter = app => {
           temp.followers = ff
           state.followers.push(temp)
         }
-        res.send(
-          JSON.stringify(state)
-            .replace(/(\")|(\{)|(\})/gim, "") // Remove all the messy parts of the json data
-            .replace(/(\,)/gim, ", ")
-        )
+
+        res.send(state)
+        /*Below is for a more readable version of the JSON data*/
+        // res.send(
+        //   JSON.stringify(state)
+        //     .replace(/(\")|(\{)|(\})/gim, "") // Remove all the messy parts of the json data
+        //     .replace(/(\,)/gim, ", ")
+        //     .replace(/(\[)/gim, "[ ")
+        //     .replace(/(\])/gim, " ]")
+        // )
       })
       .catch(error => {
         res.send(error.message)
       })
 
+    /*For initial testing purposes*/
     // let respo = axios
     //   .get("/users/matthew-riddle/followers")
     //   .then(response => {
