@@ -11,7 +11,7 @@ You will need VSCode or Atom installed, preferably VSCode since that is the edit
 Clone the repo to your desired location using your terminal of choice. (CMDER is really nice)
 
 ```
-https://github.com/Matthew-Riddle/Github-User-Request.git
+git clone https://github.com/Matthew-Riddle/Github-User-Request.git
 ```
 
 Once cloned, navigate to the project directory.
